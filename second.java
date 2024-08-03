@@ -76,7 +76,7 @@ public class second {
                         while(true){
                             System.out.print("Enter a username you want to send a message to: ");
                             username = fromUser.readLine();
-                            toServer.writeBytes(username);
+                            toServer.writeBytes(username + "\n");
                             if(fromServer.read() == 1){
                                 break;
                             }else{

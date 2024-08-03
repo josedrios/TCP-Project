@@ -61,6 +61,7 @@ public class main{
                         break;
                     case 2:
                         System.out.println("OPTION 2 SELECTED");
+                        boolean foundUser = false;
                         while (true) {
                             clientMessage = fromClient.readLine();
                             System.out.println("Received Username: " + clientMessage);
@@ -68,17 +69,25 @@ public class main{
                                 if(clientMessage.equals(usernameList[i])){
                                     System.out.println("We found the user");
                                     toClient.writeByte(1);
+                                    foundUser = true;
                                     clientMessage = fromClient.readLine();
-                                    System.out.println("The length of row "+i+"'s messages: " + messages[i].length);
-                                    System.out.println("PLACED IN: " + messages[i].length);
-                                    messages[i][messages[i].length-2] = clientMessage;
+                                    for(int j=0; j >= 0;j++){
+                                        if (messages[i][j] == null) {
+                                            messages[i][j] = clientMessage;
+                                            break;
+                                        }
+                                    }
                                     break;
                                 }else{
-                                    toClient.write(0);
-                                    System.out.println("SKIP");
+                                    System.out.println("SKIPPED");
                                 }
                             }
-                            break;
+                            if(foundUser == false){
+                                System.out.println("User not found");
+                                toClient.writeByte(0);
+                            }else{
+                                break;
+                            }
                         }
                         break;
                     case 3:
