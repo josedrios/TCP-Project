@@ -16,7 +16,7 @@ public class main{
 
         String[] usernameList = {"Alice", "Bob"};
         String[] passwordList = {"1234", "5678"};
-        String[][] messages = new String[usernameList.length][usernameList.length];
+        String[][] messages = new String[10][10];
 
         
 
@@ -91,10 +91,19 @@ public class main{
                         }
                         break;
                     case 3:
-                        toClient.writeByte(messages[logID].length);
-                        for (int i = 0; i < messages.length; i++) {
+                        int iterations = 0;
+                        for(int i = 0; i >= 0; i++){
+                            if(messages[logID][i] != null){
+                                iterations++;
+                            }else{
+                                break;
+                            }
+                        }
+                        toClient.writeByte(iterations);
+                        for (int i = 0; i < iterations; i++) {
                             toClient.writeBytes(messages[logID][i]+"\n");
                         }
+
                         break;
                     default:
                         System.out.println("CLIENT disconnected");

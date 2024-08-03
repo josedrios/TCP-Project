@@ -120,18 +120,18 @@ public class second {
     }
 
     public static int getUserInput(BufferedReader test) throws IOException{
-        String input = test.readLine();
-        int entry;
-        try{
-            entry = Integer.parseInt(input);
-        }catch(NumberFormatException e){
-            entry = 100;
-        }
+        int entry = 100;
         while(true){
+            String input = test.readLine();
+            try{
+                entry = Integer.parseInt(input);
+            }catch(NumberFormatException e){                
+            }
             if(entry >= 0 && entry <=4){
                 break;
             }else{
                 System.out.println("Invalid entry. Enter a value from 0-4.");
+                showOptions();
             }
         }
         return entry;
