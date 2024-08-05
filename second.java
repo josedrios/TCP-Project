@@ -5,11 +5,9 @@ import java.io.*;
 public class second {
     public static void main(String[] args) throws Exception{
         int entryValue;
-        String clientMessage;
-        String serverResponse;
-        String usernameList;
         BufferedReader fromUser = new BufferedReader(new InputStreamReader(System.in));
 
+        // Initial client option retrieval loop (Forces client to connect to server first)
         while (true) {
             showOptions();
             entryValue = getUserInput(fromUser);
@@ -31,13 +29,16 @@ public class second {
             }
         }
         
+        // Establish server connection and streams
         Socket clientSideSocket = new Socket("127.0.0.1", 6789);
         System.out.println("Successfully connected to SERVER");
         DataOutputStream toServer = new DataOutputStream(clientSideSocket.getOutputStream()); 
         BufferedReader fromServer = new BufferedReader(new InputStreamReader(clientSideSocket.getInputStream())); 
 
+        // Log in client option value sent to server
         toServer.writeByte(entryValue);
         while(true){
+            // Log in confirmation
             System.out.println("===========================");
             System.out.print("Please Enter the username: ");
             String username = fromUser.readLine();
@@ -56,15 +57,19 @@ public class second {
             }
         }
 
+        // Constant Client Option Retrieval Loop (Already established connection with client)
         while(true){
             showOptions();
             entryValue = getUserInput(fromUser);
+
             switch (entryValue) {
                 case 0:
                     System.out.println();
                     System.out.println("Already successfully connected to SERVER");
                     break;
                 case 1:
+                    // Get Username list from server option
+                    String usernameList;
                     toServer.writeByte(entryValue);
                     usernameList = fromServer.readLine();
                     usernameList = usernameList.replace(",", "\n");
@@ -73,30 +78,31 @@ public class second {
                     System.out.println(usernameList);
                     break;
                 case 2:
+                    // Send a message to a user option
                     toServer.writeByte(entryValue);
+                    String username;
+
+                    //"Find user to send message to" loop
                     while(true){
-                        String username;
-                        while(true){
-                            System.out.println("===========================");
-                            System.out.print("Enter a username you want to send a message to: ");
-                            username = fromUser.readLine();
-                            toServer.writeBytes(username + "\n");
-                            if(fromServer.read() == 1){
-                                break;
-                            }else{
-                                System.out.println();
-                                System.out.println("Could not find user, enter a valid username");
-                            }
-                        }
-                        System.out.print("Enter the message you want to send: ");
+                        System.out.println("===========================");
+                        System.out.print("Enter a username you want to send a message to: ");
                         username = fromUser.readLine();
                         toServer.writeBytes(username + "\n");
-                        System.out.println();
-                        System.out.println("Status: Message sent successfully");
-                        break;
+                        if(fromServer.read() == 1){
+                            break;
+                        }else{
+                            System.out.println();
+                            System.out.println("Could not find user, enter a valid username");
+                        }
                     }
+                    System.out.print("Enter the message you want to send: ");
+                    username = fromUser.readLine();
+                    toServer.writeBytes(username + "\n");
+                    System.out.println();
+                    System.out.println("Status: Message sent successfully");
                     break;
                 case 3:
+                    // Print messages for the currently logged in user
                     toServer.writeByte(entryValue);
                     System.out.println("===========================");
                     System.out.println("Here are your messages: ");
@@ -107,9 +113,9 @@ public class second {
                         }
                         break;
                     }
-                    System.out.println();
                     break;
                 case 4:
+                    // Exit program option
                     System.out.println("===========================");
                     System.out.println("Exiting program now...");
                     clientSideSocket.close();
