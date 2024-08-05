@@ -38,6 +38,7 @@ public class second {
 
         toServer.writeByte(entryValue);
         while(true){
+            System.out.println("===========================");
             System.out.print("Please Enter the username: ");
             String username = fromUser.readLine();
             toServer.writeBytes(username + "\n");
@@ -50,6 +51,7 @@ public class second {
                 System.out.println("Access Granted");
                 break;
             }else{
+                System.out.println();
                 System.out.println("Access Denied - Username/Password Incorrect");
             }
         }
@@ -59,13 +61,14 @@ public class second {
             entryValue = getUserInput(fromUser);
             switch (entryValue) {
                 case 0:
+                    System.out.println();
                     System.out.println("Already successfully connected to SERVER");
                     break;
                 case 1:
                     toServer.writeByte(entryValue);
                     usernameList = fromServer.readLine();
                     usernameList = usernameList.replace(",", "\n");
-                    // BREAK THE STRING BY DELIMINATOR AND PRINT WITH NEW LINES
+                    System.out.println("===========================");
                     System.out.println("Usernames from SERVER:");
                     System.out.println(usernameList);
                     break;
@@ -74,24 +77,28 @@ public class second {
                     while(true){
                         String username;
                         while(true){
+                            System.out.println("===========================");
                             System.out.print("Enter a username you want to send a message to: ");
                             username = fromUser.readLine();
                             toServer.writeBytes(username + "\n");
                             if(fromServer.read() == 1){
                                 break;
                             }else{
+                                System.out.println();
                                 System.out.println("Could not find user, enter a valid username");
                             }
                         }
                         System.out.print("Enter the message you want to send: ");
                         username = fromUser.readLine();
                         toServer.writeBytes(username + "\n");
+                        System.out.println();
                         System.out.println("Status: Message sent successfully");
                         break;
                     }
                     break;
                 case 3:
                     toServer.writeByte(entryValue);
+                    System.out.println("===========================");
                     System.out.println("Here are your messages: ");
                     while(true){
                         int iterNum = fromServer.read();
@@ -100,8 +107,10 @@ public class second {
                         }
                         break;
                     }
+                    System.out.println();
                     break;
                 case 4:
+                    System.out.println("===========================");
                     System.out.println("Exiting program now...");
                     clientSideSocket.close();
                     System.exit(0);
@@ -111,6 +120,7 @@ public class second {
     }
 
     public static void showOptions(){
+        System.out.println("===========================");
         System.out.println("0. Connect to the server");
         System.out.println("1. Get the user list");
         System.out.println("2. Send a message");
@@ -130,6 +140,7 @@ public class second {
             if(entry >= 0 && entry <=4){
                 break;
             }else{
+                System.out.println();
                 System.out.println("Invalid entry. Enter a value from 0-4.");
                 showOptions();
             }
