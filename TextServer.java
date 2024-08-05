@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.BufferOverflowException;
 
-public class main{
+public class TextServer{
     public static void main(String[] args) throws Exception{
         int clientOption;
 
@@ -27,7 +27,7 @@ public class main{
 
         // Establishing connection
         ServerSocket serverSideSocket = new ServerSocket(6789);
-        System.out.println("SERVER is runnning...");
+        System.out.println("SERVER is running...");
 
         while(true){
             Socket connectSocket = serverSideSocket.accept();

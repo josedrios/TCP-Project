@@ -1,8 +1,7 @@
 import java.net.Socket;
-import java.util.Scanner;
 import java.io.*;
 
-public class second {
+public class TextClient {
     public static void main(String[] args) throws Exception{
         int entryValue;
         BufferedReader fromUser = new BufferedReader(new InputStreamReader(System.in));
