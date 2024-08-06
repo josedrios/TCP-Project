@@ -115,6 +115,7 @@ public class TextClient {
                     break;
                 case 4:
                     // Exit program option
+                    toServer.writeByte(entryValue);
                     System.out.println("===========================");
                     System.out.println("Exiting program now...");
                     clientSideSocket.close();

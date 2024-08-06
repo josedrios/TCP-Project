@@ -43,7 +43,7 @@ public class TextServer{
                 System.out.println("Waiting for CLIENT response...");
                 System.out.println();
                 clientOption = fromClient.read();
-                System.out.println("CLIENT Option: " + clientOption);
+                System.out.println("User's choice is " + clientOption);
                 System.out.println();
 
                 switch(clientOption){
@@ -78,6 +78,10 @@ public class TextServer{
                         // Server username list option
                         System.out.println("Returning list of users...");
                         System.out.println();
+                        for (int i = 0; i < usernameList.length; i++) {
+                            System.out.println(usernameList[i]);
+                        }
+                        System.out.println();
                         serverResponse = String.join(",", usernameList);
                         toClient.writeBytes(serverResponse + "\n");
                         break;
@@ -86,18 +90,17 @@ public class TextServer{
                         boolean foundUser = false;
                         while (true) {
                             clientMessage = fromClient.readLine();
-                            System.out.println("Received Username: " + clientMessage);
                             System.out.println();
                             for (int i = 0; i < usernameList.length; i++) {
                                 if(clientMessage.equals(usernameList[i])){
-                                    System.out.println("User found");
-                                    System.out.println();
                                     toClient.writeByte(1);
                                     foundUser = true;
                                     clientMessage = fromClient.readLine();
                                     for(int j=0; j >= 0;j++){
                                         if (messages[i][j] == null) {
                                             messages[i][j] = usernameList[logID] + ": " + clientMessage;
+                                            System.out.println("Received a message from " + usernameList[logID]);
+                                            System.out.println();
                                             break;
                                         }
                                     }
@@ -127,14 +130,16 @@ public class TextServer{
                         for (int i = 0; i < iterations; i++) {
                             toClient.writeBytes(messages[logID][i]+"\n");
                         }
+                        System.out.println("Returning messages for " + usernameList[logID]);
+                        System.out.println();
 
                         break;
                     default:
-                        System.out.println("CLIENT disconnected");
+                        System.out.println(usernameList[logID] + " logged out");
                         System.out.println();
                         connectSocket.close();
                 }
-                if(clientOption < 0 || clientOption > 4){
+                if(clientOption < 0 || clientOption >= 4){
                     break;
                 }
             }
